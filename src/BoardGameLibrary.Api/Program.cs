@@ -3,8 +3,14 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BoardGameLibrary.Api.ErrorHandling;
 using BoardGameLibrary.Api.HealthChecks;
+using BoardGameLibrary.Api.OpenApi;
 using BoardGameLibrary.Api.Tracing;
+using BoardGameLibrary.Application.BoardGames;
+using BoardGameLibrary.Application.Categories;
 using BoardGameLibrary.Application.Common;
+using BoardGameLibrary.Application.GameCopies;
+using BoardGameLibrary.Application.Loans;
+using BoardGameLibrary.Application.Members;
 using BoardGameLibrary.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
@@ -73,15 +79,26 @@ builder.Services.AddProblemDetails(options =>
 });
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddOpenApi("v1");
+builder.Services.AddOpenApi("v1", options =>
+{
+    options.AddSchemaTransformer<ApiSchemaTransformer>();
+    options.AddDocumentTransformer<RequiredPropertiesDocumentTransformer>();
+});
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBoardGameService, BoardGameService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IGameCopyService, GameCopyService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 string connectionString = builder.Configuration.GetConnectionString(
         DependencyInjection.ConnectionStringName)
     ?? throw new InvalidOperationException(
         $"Connection string '{DependencyInjection.ConnectionStringName}' is required.");
 
-builder.Services.AddInfrastructure(connectionString);
+builder.Services.AddInfrastructure(
+    connectionString,
+    enableDemoSeed: builder.Environment.IsDevelopment());
 builder.Services
     .AddHealthChecks()
     .AddCheck(
