@@ -3,9 +3,7 @@ using BoardGameLibrary.Domain.Loans;
 
 namespace BoardGameLibrary.Application.Loans;
 
-public sealed record GetLoanQuery(
-    Guid Id,
-    DateTimeOffset UtcNow);
+public sealed record GetLoanQuery(Guid Id);
 
 public sealed record ListLoansQuery(
     Guid? MemberId,
@@ -13,7 +11,6 @@ public sealed record ListLoansQuery(
     LoanStatus? Status,
     DateTimeOffset? LoanedFromUtc,
     DateTimeOffset? LoanedToUtc,
-    DateTimeOffset UtcNow,
     PageRequest PageRequest);
 
 public static class LoanSortFields

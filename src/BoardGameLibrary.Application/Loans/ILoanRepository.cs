@@ -14,11 +14,13 @@ public interface ILoanRepository
     Task<Loan?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken);
 
     Task<LoanDetails?> GetDetailsAsync(
-        GetLoanQuery query,
+        Guid id,
+        DateTimeOffset utcNow,
         CancellationToken cancellationToken);
 
     Task<PagedResult<LoanListItem>> ListAsync(
         ListLoansQuery query,
+        DateTimeOffset utcNow,
         CancellationToken cancellationToken);
 
     Task<bool> HasOpenLoanForGameCopyAsync(

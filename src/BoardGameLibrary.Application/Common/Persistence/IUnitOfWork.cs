@@ -1,4 +1,5 @@
 using System.Data;
+using BoardGameLibrary.Application.Common;
 
 namespace BoardGameLibrary.Application.Common.Persistence;
 
@@ -8,5 +9,5 @@ public interface IUnitOfWork
         IsolationLevel isolationLevel,
         CancellationToken cancellationToken);
 
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<Result<int>> SaveChangesAsync(CancellationToken cancellationToken);
 }
