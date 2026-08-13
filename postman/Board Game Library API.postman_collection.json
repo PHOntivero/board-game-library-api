@@ -1,0 +1,319 @@
+{
+  "info": {
+    "_postman_id": "0198a000-1000-7000-8000-000000000001",
+    "name": "Board Game Library API",
+    "description": "Reviewer walkthrough for the Board Game Library API. Start PostgreSQL, apply migrations/seed, and run the API before sending requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://localhost:7080" },
+    { "key": "strategyCategoryId", "value": "0198a000-0001-7000-8000-000000000001" },
+    { "key": "catanBoardGameId", "value": "0198a000-0002-7000-8000-000000000001" },
+    { "key": "catanCopyId", "value": "0198a000-0003-7000-8000-000000000001" },
+    { "key": "firstMemberId", "value": "0198a000-0004-7000-8000-000000000001" },
+    { "key": "firstActiveLoanId", "value": "0198a000-0005-7000-8000-000000000029" },
+    { "key": "demoSuffix", "value": "" },
+    { "key": "createdCategoryId", "value": "" },
+    { "key": "createdBoardGameId", "value": "" },
+    { "key": "createdGameCopyId", "value": "" },
+    { "key": "createdMemberId", "value": "" },
+    { "key": "createdLoanId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health and contract",
+      "item": [
+        {
+          "name": "Liveness",
+          "request": { "method": "GET", "url": "{{baseUrl}}/health/live" }
+        },
+        {
+          "name": "Readiness",
+          "request": { "method": "GET", "url": "{{baseUrl}}/health/ready" }
+        },
+        {
+          "name": "OpenAPI JSON",
+          "request": { "method": "GET", "url": "{{baseUrl}}/openapi/v1.json" }
+        }
+      ]
+    },
+    {
+      "name": "Seeded walkthrough",
+      "item": [
+        {
+          "name": "Search available Catan",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/board-games?search=catan&categoryId={{strategyCategoryId}}&players=4&isAvailable=true&page=1&pageSize=20&sortBy=title&sortDirection=asc"
+          }
+        },
+        {
+          "name": "Get Catan",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/board-games/{{catanBoardGameId}}" }
+        },
+        {
+          "name": "List Catan copies",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/board-games/{{catanBoardGameId}}/copies" }
+        },
+        {
+          "name": "Get member",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/members/{{firstMemberId}}" }
+        },
+        {
+          "name": "List active loans",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans?status=active" }
+        },
+        {
+          "name": "Get active loan",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans/{{firstActiveLoanId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Write examples",
+      "item": [
+        {
+          "name": "Create category",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set('demoSuffix', Date.now().toString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Category created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('createdCategoryId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Interview Demo {{demoSuffix}}\"\n}" },
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "Update category",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Interview Demo Updated {{demoSuffix}}\",\n  \"isActive\": true\n}" },
+            "url": "{{baseUrl}}/api/categories/{{createdCategoryId}}"
+          }
+        },
+        {
+          "name": "Create board game",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Board game created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('createdBoardGameId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architecture Arena\",\n  \"publisher\": \"Demo Publisher\",\n  \"description\": \"A temporary reviewer walkthrough record.\",\n  \"publicationYear\": 2024,\n  \"minPlayers\": 2,\n  \"maxPlayers\": 4,\n  \"playingTimeMinutes\": 60,\n  \"categoryIds\": [\"{{createdCategoryId}}\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/board-games"
+          }
+        },
+        {
+          "name": "Update board game",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architecture Arena: Revised\",\n  \"publisher\": \"Demo Publisher\",\n  \"description\": \"Updated during the reviewer walkthrough.\",\n  \"publicationYear\": 2025,\n  \"minPlayers\": 2,\n  \"maxPlayers\": 5,\n  \"playingTimeMinutes\": 75,\n  \"categoryIds\": [\"{{createdCategoryId}}\"],\n  \"isActive\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/board-games/{{createdBoardGameId}}"
+          }
+        },
+        {
+          "name": "Create physical copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Copy created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('createdGameCopyId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"DEMO-{{demoSuffix}}\",\n  \"condition\": \"excellent\",\n  \"acquiredOn\": \"2026-01-10\"\n}" },
+            "url": "{{baseUrl}}/api/board-games/{{createdBoardGameId}}/copies"
+          }
+        },
+        {
+          "name": "Update physical copy",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"DEMO-{{demoSuffix}}\",\n  \"condition\": \"good\",\n  \"acquiredOn\": \"2026-01-10\",\n  \"isActive\": true\n}" },
+            "url": "{{baseUrl}}/api/game-copies/{{createdGameCopyId}}"
+          }
+        },
+        {
+          "name": "Create member",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Member created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('createdMemberId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberNumber\": \"DEMO-{{demoSuffix}}\",\n  \"fullName\": \"Demo Member\",\n  \"email\": \"demo.{{demoSuffix}}@example.test\",\n  \"phoneNumber\": null,\n  \"joinedOn\": \"2026-01-10\"\n}"
+            },
+            "url": "{{baseUrl}}/api/members"
+          }
+        },
+        {
+          "name": "Update member",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberNumber\": \"DEMO-{{demoSuffix}}\",\n  \"fullName\": \"Demo Member Updated\",\n  \"email\": \"demo.{{demoSuffix}}@example.test\",\n  \"phoneNumber\": \"+55 11 99999-0000\",\n  \"joinedOn\": \"2026-01-10\",\n  \"isActive\": true\n}" },
+            "url": "{{baseUrl}}/api/members/{{createdMemberId}}"
+          }
+        },
+        {
+          "name": "Create loan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Loan created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('createdLoanId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{createdMemberId}}\",\n  \"gameCopyId\": \"{{createdGameCopyId}}\"\n}" },
+            "url": "{{baseUrl}}/api/loans"
+          }
+        },
+        {
+          "name": "Copy is unavailable while loan is open",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/game-copies/{{createdGameCopyId}}" }
+        },
+        {
+          "name": "Duplicate active loan conflict",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{createdMemberId}}\",\n  \"gameCopyId\": \"{{createdGameCopyId}}\"\n}" },
+            "url": "{{baseUrl}}/api/loans"
+          }
+        },
+        {
+          "name": "Return created loan",
+          "request": { "method": "POST", "url": "{{baseUrl}}/api/loans/{{createdLoanId}}/return" }
+        },
+        {
+          "name": "Copy is available after return",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/game-copies/{{createdGameCopyId}}" }
+        },
+        {
+          "name": "Deactivate physical copy",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"DEMO-{{demoSuffix}}\",\n  \"condition\": \"good\",\n  \"acquiredOn\": \"2026-01-10\",\n  \"isActive\": false\n}" },
+            "url": "{{baseUrl}}/api/game-copies/{{createdGameCopyId}}"
+          }
+        },
+        {
+          "name": "Inactive copy conflict",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{createdMemberId}}\",\n  \"gameCopyId\": \"{{createdGameCopyId}}\"\n}" },
+            "url": "{{baseUrl}}/api/loans"
+          }
+        },
+        {
+          "name": "Mark physical copy damaged",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"DEMO-{{demoSuffix}}\",\n  \"condition\": \"damaged\",\n  \"acquiredOn\": \"2026-01-10\",\n  \"isActive\": true\n}" },
+            "url": "{{baseUrl}}/api/game-copies/{{createdGameCopyId}}"
+          }
+        },
+        {
+          "name": "Damaged copy conflict",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{createdMemberId}}\",\n  \"gameCopyId\": \"{{createdGameCopyId}}\"\n}" },
+            "url": "{{baseUrl}}/api/loans"
+          }
+        },
+        {
+          "name": "Overdue member conflict",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{firstMemberId}}\",\n  \"gameCopyId\": \"{{catanCopyId}}\"\n}" },
+            "url": "{{baseUrl}}/api/loans"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error examples",
+      "item": [
+        {
+          "name": "Validation error",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"\"\n}" },
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "Protected category delete",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/api/categories/{{strategyCategoryId}}" }
+        },
+        {
+          "name": "Missing category",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/categories/0198a000-ffff-7000-8000-ffffffffffff" }
+        }
+      ]
+    }
+  ]
+}
