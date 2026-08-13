@@ -1,0 +1,43 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+[Tt]est[Rr]esults/
+coverage/
+*.trx
+*.coverage
+*.coveragexml
+
+# IDE and editor state
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# JetBrains tools
+_ReSharper*/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+secrets.json
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
