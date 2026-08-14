@@ -18,7 +18,7 @@ An ASP.NET Core 10 API for managing a board-game lending library. The solution d
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). The repository's `global.json` selects an appropriate installed 10.0 feature band.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) running with Linux containers.
 - Git.
-- Optional: VS Code, Visual Studio, Rider, or any editor that supports `.http` files.
+- Optional: Postman or Insomnia for the manual reviewer walkthrough.
 
 The same workflow works on Windows and macOS. PostgreSQL does not need to be installed directly on the host.
 
@@ -68,7 +68,9 @@ The fixed walkthrough identifiers are:
 | `MEM-001` member | `0198a000-0004-7000-8000-000000000001` |
 | Canonical active loan | `0198a000-0005-7000-8000-000000000029` |
 
-For a more complete walkthrough, open [BoardGameLibrary.Api.http](BoardGameLibrary.Api.http) or import [Board Game Library API.postman_collection.json](postman/Board%20Game%20Library%20API.postman_collection.json) into Postman. Requests that return the canonical loan or create records intentionally change local demo state.
+For a more complete walkthrough, import [Board Game Library API.postman_collection.json](postman/Board%20Game%20Library%20API.postman_collection.json) into Postman or Insomnia. The collection uses the Postman Collection v2.1 format, which both clients support. Requests that return the canonical loan or create records intentionally change local demo state.
+
+Import it with **Postman > Import > Files** or **Insomnia > Import > File**, then select the JSON file from the `postman` directory. Keep `baseUrl` as `https://localhost:7080` and run the folders in this order: `Health and contract`, `Seeded walkthrough`, `Write examples`, and `Error examples`. Run the requests inside `Write examples` sequentially because its response scripts capture each created identifier for the next request.
 
 Suggested flow:
 
@@ -80,7 +82,7 @@ Suggested flow:
 6. Try to borrow with an overdue member, then with an inactive or damaged copy (rule-specific `409` responses).
 7. Send an invalid request (`400`), request the documented missing UUID (`404`), and try the seeded protected delete (`409`).
 
-The `.http` file contains that order, the complete request bodies, and the expected error codes. The Postman `Write examples` folder captures IDs from each `201` response and reuses them in the next request. Run either walkthrough from top to bottom. The fixed-value `.http` write flow is intended for a clean/reset demo database; the Postman flow generates unique operational identifiers on each run.
+The collection contains that order, the complete request bodies, and representative error cases. Its `Write examples` folder captures IDs from each `201` response and reuses them in the next request. Run that folder from top to bottom. It generates unique operational identifiers on each run.
 
 Every error response contains `code` and `traceId`; the same trace value is returned in `X-Trace-Id` and appears in the structured console logs. This lets the reviewer correlate an HTTP failure without logging the request body or member personal data.
 

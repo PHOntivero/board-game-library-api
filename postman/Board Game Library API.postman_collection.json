@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0198a000-1000-7000-8000-000000000001",
     "name": "Board Game Library API",
-    "description": "Reviewer walkthrough for the Board Game Library API. Start PostgreSQL, apply migrations/seed, and run the API before sending requests.",
+    "description": "Reviewer walkthrough for the Board Game Library API, importable in Postman or Insomnia. Start PostgreSQL, apply migrations/seed, and run the API before sending requests.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
