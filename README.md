@@ -70,7 +70,7 @@ The fixed walkthrough identifiers are:
 
 For a more complete walkthrough, import [Board Game Library API.postman_collection.json](postman/Board%20Game%20Library%20API.postman_collection.json) into Postman or Insomnia. The collection uses the Postman Collection v2.1 format, which both clients support. Requests that return the canonical loan or create records intentionally change local demo state.
 
-Import it with **Postman > Import > Files** or **Insomnia > Import > File**, then select the JSON file from the `postman` directory. Keep `baseUrl` as `https://localhost:7080` and run the folders in this order: `Health and contract`, `Seeded walkthrough`, `Write examples`, and `Error examples`. Run the requests inside `Write examples` sequentially because its response scripts capture each created identifier for the next request.
+Import it with **Postman > Import > Files** or **Insomnia > Import > File**, then select the JSON file from the `postman` directory. Keep `baseUrl` as `https://localhost:7080`. The `API endpoints` folder is a standalone toolbox containing every route; edit its `categoryId`, `boardGameId`, `gameCopyId`, `memberId`, and `loanId` collection variables as needed for live scenarios. For the scripted walkthrough, run `Health and contract`, `Seeded walkthrough`, `Write examples`, and `Error examples` in that order. Run the requests inside `Write examples` sequentially because its response scripts capture each created identifier for the next request.
 
 Suggested flow:
 

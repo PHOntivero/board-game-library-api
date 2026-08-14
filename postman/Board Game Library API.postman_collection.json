@@ -12,6 +12,11 @@
     { "key": "catanCopyId", "value": "0198a000-0003-7000-8000-000000000001" },
     { "key": "firstMemberId", "value": "0198a000-0004-7000-8000-000000000001" },
     { "key": "firstActiveLoanId", "value": "0198a000-0005-7000-8000-000000000029" },
+    { "key": "categoryId", "value": "0198a000-0001-7000-8000-000000000001" },
+    { "key": "boardGameId", "value": "0198a000-0002-7000-8000-000000000001" },
+    { "key": "gameCopyId", "value": "0198a000-0003-7000-8000-000000000001" },
+    { "key": "memberId", "value": "0198a000-0004-7000-8000-000000000015" },
+    { "key": "loanId", "value": "0198a000-0005-7000-8000-000000000029" },
     { "key": "demoSuffix", "value": "" },
     { "key": "createdCategoryId", "value": "" },
     { "key": "createdBoardGameId", "value": "" },
@@ -20,7 +25,179 @@
     { "key": "createdLoanId", "value": "" }
   ],
   "item": [
-    {
+        {
+      "name": "API endpoints",
+      "description": "Standalone endpoint toolbox for live, ad-hoc scenarios. Collection variables start with useful seeded IDs. After creating a resource, copy the returned id into categoryId, boardGameId, gameCopyId, memberId, or loanId before using the corresponding GET, PUT, DELETE, or return request. Mutating requests change local demo data.",
+      "item": [
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "List categories",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/categories?page=1&pageSize=20&sortBy=name&sortDirection=asc" }
+            },
+            {
+              "name": "Get category by id",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/categories/{{categoryId}}" }
+            },
+            {
+              "name": "Create category",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Live Category\"\n}" },
+                "url": "{{baseUrl}}/api/categories"
+              }
+            },
+            {
+              "name": "Update category",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Live Category Updated\",\n  \"isActive\": true\n}" },
+                "url": "{{baseUrl}}/api/categories/{{categoryId}}"
+              }
+            },
+            {
+              "name": "Delete category",
+              "request": { "method": "DELETE", "url": "{{baseUrl}}/api/categories/{{categoryId}}" }
+            }
+          ]
+        },
+        {
+          "name": "Board games",
+          "item": [
+            {
+              "name": "List board games",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/board-games?page=1&pageSize=20&sortBy=title&sortDirection=asc" }
+            },
+            {
+              "name": "Get board game by id",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/board-games/{{boardGameId}}" }
+            },
+            {
+              "name": "Create board game",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"title\": \"Live Board Game\",\n  \"publisher\": \"Live Publisher\",\n  \"description\": \"Created during a live API walkthrough.\",\n  \"publicationYear\": 2025,\n  \"minPlayers\": 2,\n  \"maxPlayers\": 4,\n  \"playingTimeMinutes\": 60,\n  \"categoryIds\": [\"{{categoryId}}\"]\n}" },
+                "url": "{{baseUrl}}/api/board-games"
+              }
+            },
+            {
+              "name": "Update board game",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"title\": \"Live Board Game Updated\",\n  \"publisher\": \"Live Publisher\",\n  \"description\": \"Updated during a live API walkthrough.\",\n  \"publicationYear\": 2025,\n  \"minPlayers\": 2,\n  \"maxPlayers\": 5,\n  \"playingTimeMinutes\": 75,\n  \"categoryIds\": [\"{{categoryId}}\"],\n  \"isActive\": true\n}" },
+                "url": "{{baseUrl}}/api/board-games/{{boardGameId}}"
+              }
+            },
+            {
+              "name": "Delete board game",
+              "request": { "method": "DELETE", "url": "{{baseUrl}}/api/board-games/{{boardGameId}}" }
+            }
+          ]
+        },
+        {
+          "name": "Game copies",
+          "item": [
+            {
+              "name": "List copies for board game",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/board-games/{{boardGameId}}/copies?page=1&pageSize=20&sortBy=inventoryCode&sortDirection=asc" }
+            },
+            {
+              "name": "Get game copy by id",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/game-copies/{{gameCopyId}}" }
+            },
+            {
+              "name": "Create game copy",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"LIVE-COPY-001\",\n  \"condition\": \"excellent\",\n  \"acquiredOn\": \"2026-01-10\"\n}" },
+                "url": "{{baseUrl}}/api/board-games/{{boardGameId}}/copies"
+              }
+            },
+            {
+              "name": "Update game copy",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"inventoryCode\": \"LIVE-COPY-001\",\n  \"condition\": \"good\",\n  \"acquiredOn\": \"2026-01-10\",\n  \"isActive\": true\n}" },
+                "url": "{{baseUrl}}/api/game-copies/{{gameCopyId}}"
+              }
+            },
+            {
+              "name": "Delete game copy",
+              "request": { "method": "DELETE", "url": "{{baseUrl}}/api/game-copies/{{gameCopyId}}" }
+            }
+          ]
+        },
+        {
+          "name": "Members",
+          "item": [
+            {
+              "name": "List members",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/members?page=1&pageSize=20&sortBy=fullName&sortDirection=asc" }
+            },
+            {
+              "name": "Get member by id",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/members/{{memberId}}" }
+            },
+            {
+              "name": "Create member",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"memberNumber\": \"LIVE-001\",\n  \"fullName\": \"Live Member\",\n  \"email\": \"live.member@example.test\",\n  \"phoneNumber\": null,\n  \"joinedOn\": \"2026-01-10\"\n}" },
+                "url": "{{baseUrl}}/api/members"
+              }
+            },
+            {
+              "name": "Update member",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"memberNumber\": \"LIVE-001\",\n  \"fullName\": \"Live Member Updated\",\n  \"email\": \"live.member@example.test\",\n  \"phoneNumber\": \"+55 11 99999-1111\",\n  \"joinedOn\": \"2026-01-10\",\n  \"isActive\": true\n}" },
+                "url": "{{baseUrl}}/api/members/{{memberId}}"
+              }
+            },
+            {
+              "name": "Delete member",
+              "request": { "method": "DELETE", "url": "{{baseUrl}}/api/members/{{memberId}}" }
+            }
+          ]
+        },
+        {
+          "name": "Loans",
+          "item": [
+            {
+              "name": "List loans",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/loans?page=1&pageSize=20&sortBy=loanedAtUtc&sortDirection=desc" }
+            },
+            {
+              "name": "Get loan by id",
+              "request": { "method": "GET", "url": "{{baseUrl}}/api/loans/{{loanId}}" }
+            },
+            {
+              "name": "Create loan",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": { "mode": "raw", "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"gameCopyId\": \"{{gameCopyId}}\"\n}" },
+                "url": "{{baseUrl}}/api/loans"
+              }
+            },
+            {
+              "name": "Return loan",
+              "request": { "method": "POST", "url": "{{baseUrl}}/api/loans/{{loanId}}/return" }
+            }
+          ]
+        }
+      ]
+    },
+{
       "name": "Health and contract",
       "item": [
         {
