@@ -77,8 +77,8 @@ Suggested flow:
 1. Search, filter, sort, and paginate seeded games.
 2. Create and update a category, game, copy, and member.
 3. Create a loan for an eligible copy and observe that availability becomes `false`.
-4. Return the loan and observe that availability becomes `true` again.
-5. Try a second loan for that open copy (`409 game_copy_has_open_loan`).
+4. While that loan is open, try a second loan for the same copy (`409 game_copy_has_open_loan`).
+5. Return the original loan and observe that availability becomes `true` again.
 6. Try to borrow with an overdue member, then with an inactive or damaged copy (rule-specific `409` responses).
 7. Send an invalid request (`400`), request the documented missing UUID (`404`), and try the seeded protected delete (`409`).
 
