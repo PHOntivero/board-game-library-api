@@ -68,9 +68,9 @@ The fixed walkthrough identifiers are:
 | `MEM-001` member | `0198a000-0004-7000-8000-000000000001` |
 | Canonical active loan | `0198a000-0005-7000-8000-000000000029` |
 
-For a more complete walkthrough, import [Board Game Library API.postman_collection.json](postman/Board%20Game%20Library%20API.postman_collection.json) into Postman or Insomnia. The collection uses the Postman Collection v2.1 format, which both clients support. Requests that return the canonical loan or create records intentionally change local demo state.
+For manual exploration, import [Board Game Library API.postman_collection.json](postman/Board%20Game%20Library%20API.postman_collection.json) into Postman or Insomnia. The collection uses the Postman Collection v2.1 format supported by both clients and deliberately contains no environments, variables, scripts, or automated workflow. It is a simple toolbox with every API route and representative request bodies.
 
-Import both files from the `postman` directory: `Board Game Library API.postman_collection.json` and `Board Game Library API.postman_environment.json`. In Postman, select the `Board Game Library API - Local` environment. In Insomnia, use **Import > From Folder** on the `postman` directory, then select the imported `Board Game Library API - Local` environment for the collection. Keep `baseUrl` as `https://localhost:7080`. The explicit environment makes every variable visible and editable in both clients, including the `created*` values captured during the walkthrough. The `API endpoints` folder is a standalone toolbox containing every route; edit `categoryId`, `boardGameId`, `gameCopyId`, `memberId`, and `loanId` as needed for live scenarios. For the scripted walkthrough, run `Health and contract`, `Seeded walkthrough`, `Write examples`, and `Error examples` in that order. Run the requests inside `Write examples` sequentially because its response scripts capture each created identifier for the next request.
+The local base URL is written explicitly as `https://localhost:7080`. Before sending an item-specific request, replace markers such as `REPLACE_WITH_CATEGORY_ID` or `REPLACE_WITH_LOAN_ID` with an ID returned by a previous request or with one of the canonical seed IDs above. This keeps the collection client-agnostic and makes every state change explicit during a live walkthrough.
 
 Suggested flow:
 
@@ -82,7 +82,7 @@ Suggested flow:
 6. Try to borrow with an overdue member, then with an inactive or damaged copy (rule-specific `409` responses).
 7. Send an invalid request (`400`), request the documented missing UUID (`404`), and try the seeded protected delete (`409`).
 
-The collection contains that order, the complete request bodies, and representative error cases. Its `Write examples` folder captures IDs from each `201` response and reuses them in the next request. Run that folder from top to bottom. It generates unique operational identifiers on each run.
+These scenarios are intentionally manual: copy each `id` returned by a `POST` into the next request that needs it. Operational identifiers such as `inventoryCode`, `memberNumber`, and email must be changed before repeating a creation request because they are unique.
 
 Every error response contains `code` and `traceId`; the same trace value is returned in `X-Trace-Id` and appears in the structured console logs. This lets the reviewer correlate an HTTP failure without logging the request body or member personal data.
 
