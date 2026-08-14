@@ -256,7 +256,9 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
-                  "pm.collectionVariables.set('demoSuffix', Date.now().toString());"
+                  "const demoSuffix = Date.now().toString();",
+                  "pm.collectionVariables.set('demoSuffix', demoSuffix);",
+                  "pm.environment.set('demoSuffix', demoSuffix);"
                 ]
               }
             },
@@ -265,7 +267,8 @@
               "script": {
                 "exec": [
                   "pm.test('Category created', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('createdCategoryId', pm.response.json().id);"
+                  "pm.collectionVariables.set('createdCategoryId', pm.response.json().id);",
+                  "pm.environment.set('createdCategoryId', pm.response.json().id);"
                 ]
               }
             }
@@ -294,7 +297,8 @@
               "script": {
                 "exec": [
                   "pm.test('Board game created', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('createdBoardGameId', pm.response.json().id);"
+                  "pm.collectionVariables.set('createdBoardGameId', pm.response.json().id);",
+                  "pm.environment.set('createdBoardGameId', pm.response.json().id);"
                 ]
               }
             }
@@ -329,7 +333,8 @@
               "script": {
                 "exec": [
                   "pm.test('Copy created', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('createdGameCopyId', pm.response.json().id);"
+                  "pm.collectionVariables.set('createdGameCopyId', pm.response.json().id);",
+                  "pm.environment.set('createdGameCopyId', pm.response.json().id);"
                 ]
               }
             }
@@ -358,7 +363,8 @@
               "script": {
                 "exec": [
                   "pm.test('Member created', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('createdMemberId', pm.response.json().id);"
+                  "pm.collectionVariables.set('createdMemberId', pm.response.json().id);",
+                  "pm.environment.set('createdMemberId', pm.response.json().id);"
                 ]
               }
             }
@@ -390,7 +396,8 @@
               "script": {
                 "exec": [
                   "pm.test('Loan created', () => pm.response.to.have.status(201));",
-                  "pm.collectionVariables.set('createdLoanId', pm.response.json().id);"
+                  "pm.collectionVariables.set('createdLoanId', pm.response.json().id);",
+                  "pm.environment.set('createdLoanId', pm.response.json().id);"
                 ]
               }
             }
